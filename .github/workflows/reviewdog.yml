@@ -1,0 +1,27 @@
+# Inline pull request review from golangci-lint.
+# Uses the default GITHUB_TOKEN only; no extra token or account.
+name: review
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  golangci-lint:
+    name: golangci-lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: golangci-lint
+        uses: reviewdog/action-golangci-lint@v2.10.2
+        with:
+          github_token: ${{ github.token }}
+          reporter: github-pr-review
+          filter_mode: added
+          fail_level: error
+          golangci_lint_version: v2.15.0
